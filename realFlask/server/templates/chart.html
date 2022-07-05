@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ChartJS Load 및 데이터 추가-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- const VALUE = getElementById().value 그런 아이디를 갖고 있는 애들의 값을 가져올 것이다-->
+    <!-- 상단 스크립트에 이중 중괄호 열고 const 없이 data_list, decide 선언하면 되긴 되는데-->
+    <!-- JSON으로 받아칩니다 (어쩔JSON) -->
+    <script>
+
+      decide = {{decide|tojson}}
+      labels = {{data_list|tojson}}
+
+        const data = {
+          labels : labels,
+          datasets: [{
+            label: 'My First dataset',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: decide,
+          }]
+        };
+      
+        const config = {
+          type: 'line',
+          data: data,
+          options: {}
+        };
+      </script>
+       
+    <title>Document</title>
+</head>
+
+<!-- p태그 만들어놓고 이중 중괄호 안에 값을 넣으면 그게 출력될 거임. 잘 들어갔나 일단 보기부터 합시다 -->
+<!-- 근데 어처구니가 없다 주석에 이중 중괄호 문자 그대로 넣었는데 프로그램이 왜 터져 -->
+
+<body>
+    <p id="decide" style="display:none">{{decide}}</p>
+    <p id="data_list" style="display:none">{{data_list}}</p>
+    <!-- CharJS를 이용해 그래프 그리기 -->
+    <div style="width:75%">
+        <canvas id="myChart"></canvas>
+    </div>
+    <table border="1">
+      <tr>
+        <th>등록일시</th>
+        <th>일일사망자</th>
+      </tr>
+      <!-- 중괄호 퍼센트 이 사이에 PYTHON CODE 사용 가능 퍼센트 중괄호 -->
+      <!-- 이 놈의 주석은 마음대로 쓰지도 못하네 진짜 -->
+      {% for i in range(0, cnt) %}
+      <tr>
+        <td>{{data_list[i]}}</td>
+        <td>{{decide[i]}}</td>
+      </tr>
+      {% endfor %}
+      <!-- HTML 에선 들여쓰기가 없어서 endfor를 지정해야 for문이 끝납니다 -->
+    </table>
+    <script>
+        const myChart = new Chart(
+          document.getElementById('myChart'),
+          config
+        );
+    </script>      
+    
+</body>
+</html>

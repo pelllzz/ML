@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- jQuery Load -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+    <!-- 라디오 버튼은 이름이 다 똑같아야 하나만 선택할 수 있음 -->
+    <input type="radio" id="_use" name="_use" value="가위">가위
+    <input type="radio" id="_use" name="_use" value="바위">바위
+    <input type="radio" id="_use" name="_use" value="보">보
+    <button id="game">한판하자</button>
+    <!-- p가 아무것도 없이 있지만 승패 결과를 보여주기 위해 존재하는 중 -->
+    <p class="rst"></p>
+    <p class="win"></p>
+
+    <script>
+        var win = 0
+        var draw = 0
+        var lose = 0
+        $("#game").click(function(){
+            $.post(
+                // 타겟 페이지 잘 잡아주세요 여기 슬래시 있는 게 main.py에서 게임을 끌고옵니다
+                '/game2',{
+                    // 라디오버튼 선택값을 확인할 거임 = 가위바위보 뭐 냈나
+                    use: $("#_use").val()
+                },
+                function(data, status){
+                    if(data.result=="무승부"){
+                        draw = draw + 1
+                    } else if(data.result=="승리"){
+                        win = win + 1
+                    } else {
+                        lose = lose + 1
+                    }                
+                    $("p.rst").text(data.result)
+                    $("p.win").text(win)
+                }
+            )
+        })
+    </script>
+</body>
+</html>

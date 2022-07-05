@@ -1,0 +1,32 @@
+main.py를 가지고 이것저것 할 거기 때문에
+어느정도 뼈대가 남은 걸 가지고 메모를 남겼습니다
+
+# 대문자, 소문자에 아주 민감하게 반응하니까 조심합시다
+# 중간에 뭘 잘못 건드렸다 다시 올릴 때 서버가 "개복치"마냥 쓰러집니다
+
+# Flask 라이브러리의 flask 클래스를 가져온다고 이해하면됨 (일단)
+from flask import Flask
+
+# __name__ : 파일이름을 의미함
+# 있어보이려고 한 건 아니고 파일이름이 아무리 바뀌어도 고정으로 들어갑니다
+app = Flask(__name__)
+
+# Web => address(url), default -> localhost:5000
+# / 뒤에 이렇다 할 URL 정보가 없으니 빈 URL이라고 칭하는 것이고 default는 위에 있는 것과 같다.
+# 이거 그냥 쉽게 이해하려면 서버 올리고 처음 보이는 페이지인 index()에 접근한다고 보는 게 빠릅니다.
+@app.route("/")
+
+# 함수 이름은 그냥 알아서 지으면 되는데 중복만 안 되면 상관없습니다
+def index():
+    return "Hello, World!"
+
+# localhost:5000/second 입력 시 second() 함수가 실행됩니다
+# 이거도 파이썬이라고 절차지향적인 문제가 있는 것 같으니 추후에 코딩할 때 조심하세요
+# 1 route - 1 function 매칭이 잘 되는지 확인을 해 볼 필요가 있는 것 같다...라는 생각이...
+@app.route("/second")
+
+def second():
+    return "Second Page"
+
+# Flask 가동!!
+app.run
