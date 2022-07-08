@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- jQuery Load -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+    <!-- 라디오 버튼은 이름이 다 똑같아야 하나만 선택할 수 있음 -->
+    <input type="radio" id="_use" name="_use" value="가위">가위
+    <input type="radio" id="_use" name="_use" value="바위">바위
+    <input type="radio" id="_use" name="_use" value="보">보
+    <button id="game">한판하자</button>
+    
+    <table class="table table-hover table-striped text-center" style="width: 50%; border: 1px">
+        <thead>
+            <tr>
+                <th>이름</th>
+                <th>포지션</th>
+                <th>자기소개</th>
+                <th>추천</th>
+                </tr>
+        </thead>
+        <tbody>
+            {% for i in datab %}
+            <tr>
+                <td>{{ i["name"] }}</td>
+                <td>{{ i["position"] }}</td>
+                <td>{{ i["introduce"] }}</td>
+                <td></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

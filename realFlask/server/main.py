@@ -6,9 +6,12 @@
 # 자꾸 from 이런 거 왜 생기나 했더니 VS Code 자기가 알아서 패키지 끌어오고 있었어
 
 from io import BytesIO
+
+from pyrsistent import s
 import mod_sql
 import random
 import pandas as pd
+import numpy as np
 #import matplotlib
 #matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -26,7 +29,14 @@ app.secret_key = "Super Secret Key"
 
 # 함수 이름은 그냥 알아서 지으면 되는데 중복만 안 되면 상관없습니다
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
+
+@app.route("/main3")
+def main3():
+    #sql = "SELECT name, position, introduce from team_pick"
+    #_db = mod_sql.Database()
+    #data = _db.execute_all(sql)
+    return render_template('main3.html')
 
 # localhost:5000/second 입력 시 second() 함수가 실행됩니다
 @app.route("/second")
@@ -86,7 +96,7 @@ def signup2():
 
             # connect DB
 
-            sql = '''INSERT INTO team_pick VALUES (%s, %s, %s, %s, '0')'''
+            sql = '''INSERT INTO team_pick VALUES (%s, %s, %s, %s, 0)'''
             values=[_id, _pwd, _name, _position]
             
             _db = mod_sql.Database() #mod_sql module class 선언
@@ -109,18 +119,35 @@ def signin():
     print(_id, _pwd)
     print(request.form)
 
-    sql ='''SELECT * from user WHERE id = %s AND pass = %s'''
-    values = [_id, _pwd]
-
+    sql = '''SELECT id, pass from team_pick WHERE id = "%s" and pass = "%s" ''' % (_id, _pwd)
     _db = mod_sql.Database()
-    result = _db.execute_all(sql, values)
+    data = _db.execute_all(sql)
 
     # SQL문 수행 시 회원이 아니라면 result 길이가 0이 될 테고 참이라면 결과는 1개만 나올 것임
     # 1개만 나온다고 -> id는 primary key = 중복불가능 -> 결과가 1개밖에 안 나오겠죠
 
-    if result:
+    if data:
         # Login Success
-        return render_template("main2.html")
+
+        name=[]
+        position=[]
+        introduce=[]
+
+        sqlb = '''SELECT `name`, `position`, `introduce` from team_pick'''
+        _dbb = mod_sql.Database()
+        datab = _dbb.execute_all(sqlb)
+
+        for i in datab:
+            name.append(i["name"])
+            position.append(i["position"])
+            introduce.append(i["introduce"])
+
+        print(name)
+        print(position)
+        print(introduce)
+
+        return render_template('main3.html', datab=datab, name=name, position=position, introduce=introduce)
+
     else:
         # Login Fail
         return redirect(url_for('index'))
